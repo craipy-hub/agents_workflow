@@ -46,7 +46,7 @@ tools: ['vscode', 'execute', 'read', 'edit', 'search', 'web', 'todo', 'figma']
 | MCP 工具 | 触发时机 | 作用 |
 |----------|----------|------|
 | `mcp_com_figma_mcp_create_new_file` | **启动新项目设计时** | 创建新的 Figma 文件，获取 fileKey |
-| `mcp_com_figma_mcp_search_design_system` | **设计前** | 搜索已有的设计系统组件，优先复用 |
+| `mcp_com_figma_mcp_search_design_system` | **设计前** | 搜索已有的设计系统组件，优先复用。**已启用 "Material UI for Figma (and MUI X) (Community)" 组件库**，包含完整的 MUI 组件和 palette 变量 |
 | `mcp_com_figma_mcp_use_figma` | **创建/编辑设计元素时** | 底层 Figma Plugin API 执行器，创建/编辑/删除节点、设置变量、构建组件 |
 | `mcp_com_figma_mcp_generate_figma_design` | **从已有 Web 页面捕获设计时** | 将运行中的 Web 页面（URL）截取/导入到 Figma，适用于已有前端页面需要同步到 Figma 的场景。**注意：此工具需要可访问的 URL，不能凭空生成设计** |
 | `mcp_com_figma_mcp_get_screenshot` | **验证设计效果时** | 获取设计截图确认结果 |
@@ -65,7 +65,7 @@ tools: ['vscode', 'execute', 'read', 'edit', 'search', 'web', 'todo', 'figma']
 ```
 步骤 1：需求分析 → 分析 PM 需求规格中的 UI 机会
 步骤 2：创建 Figma 文件 → 调用 mcp_com_figma_mcp_create_new_file
-步骤 3：搜索设计系统 → 调用 mcp_com_figma_mcp_search_design_system 查找可复用组件
+步骤 3：搜索 MUI 组件库 → 调用 mcp_com_figma_mcp_search_design_system 搜索 "Material UI for Figma" 中的组件（如 TextField、Button、Card 等），优先使用库组件而非手动绘制
 步骤 4：构建设计系统（如需要）→ 调用 mcp_com_figma_mcp_use_figma 创建组件库
 步骤 5：设计屏幕 → 调用 mcp_com_figma_mcp_use_figma 用 Figma Plugin API 构建每个页面
         → 如果项目已有运行中的 Web 页面，可同时调用 mcp_com_figma_mcp_generate_figma_design 捕获参考
