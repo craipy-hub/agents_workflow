@@ -101,6 +101,46 @@ tools: ['vscode', 'execute', 'read', 'agent', 'edit', 'search', 'web', 'todo']
 - 使用语言/框架的惯用方式
 - 显式处理错误 — 不吞掉异常，不静默失败
 
+#### 代码注释与文档规范（中文）
+
+**文件头部说明**（每个代码文件顶部必须包含）：
+```
+/**
+ * @file [文件名]
+ * @description [简要说明此文件的用途和职责]
+ * @author Dev Agent
+ * @date [创建日期]
+ */
+```
+
+**注释规则：**
+- 所有注释必须使用**中文**
+- 函数/方法必须有中文注释，说明功能、参数和返回值
+- 复杂逻辑段必须有注释说明**为什么**这样做（而不是**做了什么**）
+- React 组件必须在文件头注释中说明组件用途和 props 含义
+- 不要写废话注释（如 `// 设置变量`），只在需要解释意图时写
+
+#### Python 类型注释规范
+
+Python 代码**必须有完整的类型注释**，确保通过 Pylance 严格模式审查：
+
+```python
+def get_user_by_id(user_id: int) -> User | None:
+    """根据用户ID获取用户信息"""
+    ...
+
+def process_orders(orders: list[Order], *, limit: int = 100) -> tuple[list[Result], int]:
+    """批量处理订单，返回结果列表和处理数量"""
+    ...
+```
+
+**规则：**
+- 所有函数参数和返回值必须有类型注释
+- 类属性必须有类型声明
+- 使用 `typing` 模块的高级类型（`TypeVar`、`Generic`、`Protocol` 等）
+- 避免 `Any` 类型，除非确实无法确定类型
+- 提交前运行 Pylance 检查，确保零类型错误
+
 ### 4. 自测验证
 
 完成实现后，**必须调用 `superpowers:verification-before-completion`**：
@@ -198,6 +238,40 @@ git commit -m "<type>(<scope>): <简短描述>
 - 永远不要在日志中记录密钥
 - 每个接口都要考虑权限控制
 
+### 日志规范
+
+**所有代码必须集成日志系统**，确保运行时有详细的可追踪日志。
+
+**前端（React）：** 使用统一的 logger 工具（基于 `console` 封装或第三方库如 `loglevel`）
+```typescript
+// 日志级别：debug < info < warn < error
+logger.info('[模块名] 操作描述', { 关键数据 });
+logger.error('[模块名] 错误描述', error);
+```
+
+**后端（Node.js）：** 使用结构化日志（如 `winston` 或 `pino`）
+```typescript
+logger.info('用户登录成功', { userId, ip });
+logger.error('数据库查询失败', { query, error: err.message });
+```
+
+**Python：** 使用标准库 `logging` 模块
+```python
+import logging
+logger = logging.getLogger(__name__)
+
+logger.info('用户登录成功 userId=%s ip=%s', user_id, ip)
+logger.error('数据库查询失败', exc_info=True, extra={'query': query})
+```
+
+**日志规则：**
+- 每个 API 请求/响应必须有日志（入口和出口）
+- 每个关键业务操作必须有日志（用户操作、状态变更、数据变更）
+- 错误必须记录完整的上下文信息（不要只记 error.message）
+- 日志消息用中文，便于快速定位问题
+- 敏感信息（密码、token）**绝不记录**
+- 使用合适的日志级别：debug（调试）、info（正常流程）、warn（异常但可恢复）、error（错误）
+
 ### 性能
 - 不要过早优化，但也不要忽视
 - 有 O(n) 方案时不要用 O(n²)
@@ -224,3 +298,10 @@ git commit -m "<type>(<scope>): <简短描述>
 - ❌ 在一次提交中混合风格修改和功能修改
 - ❌ 跳过测试直接交付
 - ❌ 修改不在任务范围内的代码
+- ❌ 编写任何兼容性代码，包括但不限于：
+  - 新旧功能兼容层 — 新功能直接替代旧功能，删除旧代码
+  - 废弃 API 的 shim/polyfill — 直接使用新 API
+  - `@deprecated` 标记后仍保留旧方法 — 直接删除
+  - 多版本数据格式兼容 — 直接使用新格式，需要迁移就写迁移脚本
+  - 条件分支处理新旧两套逻辑 — 只保留新逻辑
+  - 向后兼容的接口参数 — 旧参数直接移除
