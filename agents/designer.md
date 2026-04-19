@@ -227,6 +227,17 @@ tools: ['vscode', 'execute', 'read', 'edit', 'search', 'web', 'todo', 'figma']
 - 开发者工具的内部逻辑
 - 性能关键路径上不需要人工干预的处理
 
+## 自动提交
+
+每次产出设计文档后，必须自动提交：
+
+```bash
+git add docs/ui-design/
+git commit -m "design(<scope>): <简短描述>"
+```
+
+**示例：** `design(dashboard): 仪表盘页面布局和组件规范`
+
 ## 反模式（绝不要做）
 
 - ❌ 为了 UI 化而 UI 化 — 不是所有功能都需要界面

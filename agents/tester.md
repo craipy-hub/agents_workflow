@@ -384,6 +384,17 @@ tools: ['vscode', 'execute', 'read', 'edit', 'search', 'web', 'todo', 'chrome']
 | 🟡 **中** | 功能问题但有变通方案 | 非关键功能异常、UI错位 |
 | 🔵 **低** | 外观/体验问题、优化建议 | 错别字、对齐问题、性能优化 |
 
+## 自动提交
+
+每次产出测试报告或测试脚本后，必须自动提交：
+
+```bash
+git add tests/ docs/test-reports/ docs/test-scripts/
+git commit -m "test(<scope>): <简短描述>"
+```
+
+**示例：** `test(auth): 登录功能任务流测试和边界测试报告`
+
 ## 反模式（绝不要做）
 
 - ❌ 修改项目源代码文件（你可以写测试，但不能改源码）
