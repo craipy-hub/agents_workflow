@@ -51,71 +51,80 @@
 
 ### 安装依赖
 
-```bash
-# 在 VS Code 中安装所需插件（通过 Copilot Chat Agent Marketplace）
-# 1. obra/superpowers
-# 2. obra/superpowers-chrome  
-# 3. github/awesome-copilot（包含 project-planning、frontend-web-dev 等）
-# 4. figma/mcp-server-guide
-
-# 或通过 CLI 安装
-code --install-extension obra.superpowers
-code --install-extension obra.superpowers-chrome
-```
+在 VS Code Extensions 视图中搜索 `@agentPlugins`，找到并安装以下插件：
+- `obra/superpowers`
+- `obra/superpowers-chrome`
+- `github/awesome-copilot`（包含 project-planning、frontend-web-dev）
+- `figma/mcp-server-guide`
 
 ## 安装
 
-### 方式一：通过 VS Code Copilot 插件市场安装（推荐）
+### 方式一：从源仓库安装（推荐）
 
 1. 打开 VS Code
-2. 打开 Copilot Chat 面板
-3. 点击 Chat 面板顶部的 **"管理 Agents"** 或 **扳手图标**
-4. 选择 **"Add from GitHub Repository..."**
-5. 输入仓库地址：`craipy-hub/agents_workflow`
-6. 确认安装
+2. 打开命令面板（`⇧⌘P`）
+3. 输入 `Chat: Install Plugin From Source`
+4. 输入仓库地址：`https://github.com/craipy-hub/agents_workflow`
+5. VS Code 会自动克隆并安装插件
 
-### 方式二：手动克隆安装
+### 方式二：添加到插件市场配置
+
+在 `settings.json` 中添加：
+```json
+"chat.plugins.marketplaces": [
+    "craipy-hub/agents_workflow"
+]
+```
+然后在 Extensions 视图中搜索 `@agentPlugins` 即可找到并安装。
+
+### 方式三：本地插件注册
 
 ```bash
-# 克隆到 VS Code agent plugins 目录
-git clone https://github.com/craipy-hub/agents_workflow.git \
-  ~/.vscode/agent-plugins/github.com/craipy-hub/agents_workflow
+# 克隆仓库
+git clone https://github.com/craipy-hub/agents_workflow.git ~/my-plugins/agents_workflow
 ```
 
-### 方式三：符号链接（开发调试用）
-
-```bash
-# 如果你已经克隆了仓库，创建符号链接
-ln -s /path/to/your/agents_workflow \
-  ~/.vscode/agent-plugins/github.com/craipy-hub/agents_workflow
+在 `settings.json` 中注册：
+```json
+"chat.pluginLocations": {
+    "/Users/yourname/my-plugins/agents_workflow": true
+}
 ```
-
-安装后重启 VS Code，在 Copilot Chat 中即可使用 `@team-lead` 等 Agent。
 
 ### 方式四：项目级安装（仅当前项目可用）
 
-将插件文件复制到项目的 `.github/copilot/` 目录：
+将插件文件复制到项目中：
 
 ```bash
-# 在你的项目根目录下
+# 作为 git submodule
+git submodule add https://github.com/craipy-hub/agents_workflow.git .github/copilot/agents_workflow
+
+# 或直接克隆
 mkdir -p .github/copilot
 git clone https://github.com/craipy-hub/agents_workflow.git .github/copilot/agents_workflow
-
-# 或者作为 git submodule
-git submodule add https://github.com/craipy-hub/agents_workflow.git .github/copilot/agents_workflow
-```
-
-也可以直接将 `agents/` 目录复制到项目中：
-
-```bash
-# 最简方式：只复制 agent 文件
-cp -r agents_workflow/agents/ .github/copilot/agents/
 ```
 
 项目级安装的好处：
 - 只在当前项目中生效，不影响其他项目
 - 可以和项目代码一起版本控制
 - 团队成员 clone 项目后自动获得这些 Agent
+
+## 插件结构
+
+```
+agents_workflow/
+├── plugin.json                      # 插件元数据（Copilot 格式）
+├── .claude-plugin/plugin.json       # Claude Code 兼容
+├── agents/                          # Agent 定义
+│   ├── team-lead.agent.md           # 主控编排者
+│   ├── project-manager.agent.md     # 项目经理
+│   ├── designer.agent.md            # UI 设计师
+│   ├── developer.agent.md           # 开发者
+│   └── tester.agent.md              # 测试员
+├── README.md
+├── USAGE.md                         # 使用示例
+└── LICENSE
+```
 
 ## 架构概览
 
@@ -206,11 +215,11 @@ docs/
 
 | Agent | 文件 | 描述 | 集成 Skills |
 |-------|------|------|-------------|
-| Team Lead | `agents/team-lead.md` | 纯编排者，分解任务、委派工作、验证结果、管理上下文传递 | - |
-| PM | `agents/project-manager.md` | 需求分析、进度规划、产品边界定义、里程碑复审 | superpowers 头脑风暴、Epic/Feature PRD、技术 Spike |
-| Designer | `agents/designer.md` | Figma UI 设计、MUI 规范、视觉规范、交互流程 | Figma MCP（6 个 skills）、gem-designer、MUI 设计系统 |
-| Dev | `agents/developer.md` | Vite+React+MUI 开发、TDD、编写代码、实现功能 | superpowers TDD/调试/验证/并行处理 |
-| Tester | `agents/tester.md` | 代码审查 + 截图测试 + E2E + 多角色测试 | Chrome 自动化、Playwright、性能/无障碍测试 |
+| Team Lead | `agents/team-lead.agent.md` | 纯编排者，分解任务、委派工作、验证结果、管理上下文传递 | - |
+| PM | `agents/project-manager.agent.md` | 需求分析、进度规划、产品边界定义、里程碑复审 | superpowers 头脑风暴、Epic/Feature PRD、技术 Spike |
+| Designer | `agents/designer.agent.md` | Figma UI 设计、MUI 规范、视觉规范、交互流程 | Figma MCP（6 个 skills）、gem-designer、MUI 设计系统 |
+| Dev | `agents/developer.agent.md` | Vite+React+MUI 开发、TDD、编写代码、实现功能 | superpowers TDD/调试/验证/并行处理 |
+| Tester | `agents/tester.agent.md` | 代码审查 + 截图测试 + E2E + 多角色测试 | Chrome 自动化、Playwright、性能/无障碍测试 |
 
 ## 使用方式
 
