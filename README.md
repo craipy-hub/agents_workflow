@@ -65,14 +65,57 @@ code --install-extension obra.superpowers-chrome
 
 ## 安装
 
-将此仓库克隆或复制到你的 VS Code agent plugins 目录：
+### 方式一：通过 VS Code Copilot 插件市场安装（推荐）
+
+1. 打开 VS Code
+2. 打开 Copilot Chat 面板
+3. 点击 Chat 面板顶部的 **"管理 Agents"** 或 **扳手图标**
+4. 选择 **"Add from GitHub Repository..."**
+5. 输入仓库地址：`craipy-hub/agents_workflow`
+6. 确认安装
+
+### 方式二：手动克隆安装
 
 ```bash
-# macOS / Linux
-cp -r . ~/.vscode/agent-plugins/dev-team-workflow
-
-# 或者在 VS Code 中，通过 Copilot Chat 直接使用
+# 克隆到 VS Code agent plugins 目录
+git clone https://github.com/craipy-hub/agents_workflow.git \
+  ~/.vscode/agent-plugins/github.com/craipy-hub/agents_workflow
 ```
+
+### 方式三：符号链接（开发调试用）
+
+```bash
+# 如果你已经克隆了仓库，创建符号链接
+ln -s /path/to/your/agents_workflow \
+  ~/.vscode/agent-plugins/github.com/craipy-hub/agents_workflow
+```
+
+安装后重启 VS Code，在 Copilot Chat 中即可使用 `@team-lead` 等 Agent。
+
+### 方式四：项目级安装（仅当前项目可用）
+
+将插件文件复制到项目的 `.github/copilot/` 目录：
+
+```bash
+# 在你的项目根目录下
+mkdir -p .github/copilot
+git clone https://github.com/craipy-hub/agents_workflow.git .github/copilot/agents_workflow
+
+# 或者作为 git submodule
+git submodule add https://github.com/craipy-hub/agents_workflow.git .github/copilot/agents_workflow
+```
+
+也可以直接将 `agents/` 目录复制到项目中：
+
+```bash
+# 最简方式：只复制 agent 文件
+cp -r agents_workflow/agents/ .github/copilot/agents/
+```
+
+项目级安装的好处：
+- 只在当前项目中生效，不影响其他项目
+- 可以和项目代码一起版本控制
+- 团队成员 clone 项目后自动获得这些 Agent
 
 ## 架构概览
 
