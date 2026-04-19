@@ -2,6 +2,12 @@
 
 四角色协作的软件开发工作流插件：一个主控编排者 + 四个专业子Agent，模拟真实软件开发团队的协作模式。
 
+## 技术栈
+
+- **前端**：Vite + React + TypeScript + MUI (Material UI)
+- **设计**：Figma（通过 MCP 服务器直接操作画布）
+- **测试**：Chrome 自动化截图 + Playwright E2E
+
 ## 安装
 
 将此仓库克隆或复制到你的 VS Code agent plugins 目录：
@@ -100,11 +106,13 @@ docs/
 
 ## 包含的 Agents
 
-| Agent | 文件 | 描述 |
-|-------|------|------|
-| Team Lead | `agents/team-lead.md` | 纯编排者，分解任务、委派工作、验证结果、管理上下文传递 |
-| PM | `agents/project-manager.md` | 需求分析、进度规划、产品边界定义、里程碑复审、分歧仲裁 || Designer | `agents/designer.md` | UI机会分析、界面设计、视觉规范、交互流程、响应式设计 || Dev | `agents/developer.md` | 逐步制定开发计划、编写代码、实现功能、报告写入文件 |
-| Tester | `agents/tester.md` | 代码审查 + 多角色任务流/可用性/边界测试 + 可写独立测试脚本 |
+| Agent | 文件 | 描述 | 集成 Skills |
+|-------|------|------|-------------|
+| Team Lead | `agents/team-lead.md` | 纯编排者，分解任务、委派工作、验证结果、管理上下文传递 | - |
+| PM | `agents/project-manager.md` | 需求分析、进度规划、产品边界定义、里程碑复审 | superpowers 头脑风暴、Epic/Feature PRD、技术 Spike |
+| Designer | `agents/designer.md` | Figma UI 设计、MUI 规范、视觉规范、交互流程 | Figma MCP（6 个 skills）、gem-designer、MUI 设计系统 |
+| Dev | `agents/developer.md` | Vite+React+MUI 开发、TDD、编写代码、实现功能 | superpowers TDD/调试/验证/并行处理 |
+| Tester | `agents/tester.md` | 代码审查 + 截图测试 + E2E + 多角色测试 | Chrome 自动化、Playwright、性能/无障碍测试 |
 
 ## 使用方式
 
