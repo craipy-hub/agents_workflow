@@ -8,6 +8,61 @@
 - **设计**：Figma（通过 MCP 服务器直接操作画布）
 - **测试**：Chrome 自动化截图 + Playwright E2E
 
+## 依赖项
+
+本插件引用了以下外部插件、Skills 和 MCP 服务。使用前请确保已安装。
+
+### 必需插件
+
+| 插件 | 来源 | 用于 Agent | 说明 |
+|------|------|-----------|------|
+| [superpowers](https://github.com/obra/superpowers) | `obra/superpowers` | Dev, PM | TDD、系统化调试、验证、头脑风暴等开发方法论 |
+| [superpowers-chrome](https://github.com/obra/superpowers-chrome) | `obra/superpowers-chrome` | Tester | Chrome 浏览器自动化，截图、DOM 操作、表单填充 |
+| [project-planning](https://github.com/github/awesome-copilot) | `github/awesome-copilot` (plugins/project-planning) | PM | Epic/Feature PRD、技术 Spike、实现计划 |
+| [frontend-web-dev](https://github.com/github/awesome-copilot) | `github/awesome-copilot` (plugins/frontend-web-dev) | Tester | Playwright 网站探索和 E2E 测试生成 |
+
+### 必需 MCP 服务
+
+| MCP 服务 | 来源 | 用于 Agent | 说明 |
+|----------|------|-----------|------|
+| **Figma MCP Server** | [figma/mcp-server-guide](https://github.com/figma/mcp-server-guide) | Designer | 直接在 Figma 画布上创建/编辑设计，需要 Figma 账号和 API 连接 |
+
+### 引用的 Agents（来自 awesome-copilot）
+
+| Agent | 用于 | 说明 |
+|-------|------|------|
+| `gem-designer` | Designer | 通用 UI/UX 设计决策（布局、主题、色彩、可访问性） |
+| `gem-designer-mobile` | Designer | 移动端设计规范（iOS HIG / Android Material Design 3） |
+| `gem-browser-tester` | Tester | 视觉回归测试（基线截图对比） |
+| `accessibility-runtime-tester` | Tester | 运行时无障碍测试（键盘导航、WCAG 合规） |
+| `frontend-performance-investigator` | Tester | 前端性能分析（Core Web Vitals、Lighthouse） |
+| `devtools-regression-investigator` | Tester | 回归 bug 复现与证据收集 |
+
+### Figma Skills 清单
+
+| Skill | 说明 |
+|-------|------|
+| `figma-use` | **强制前置** — Figma Plugin API 底层执行器 |
+| `figma-generate-design` | 从需求创建完整屏幕设计 |
+| `figma-generate-library` | 构建设计系统/组件库/变量令牌 |
+| `figma-create-new-file` | 创建新的 Figma 文件 |
+| `figma-create-design-system-rules` | 生成项目级设计系统规则 |
+| `figma-code-connect` | Figma 组件与代码组件的映射 |
+
+### 安装依赖
+
+```bash
+# 在 VS Code 中安装所需插件（通过 Copilot Chat Agent Marketplace）
+# 1. obra/superpowers
+# 2. obra/superpowers-chrome  
+# 3. github/awesome-copilot（包含 project-planning、frontend-web-dev 等）
+# 4. figma/mcp-server-guide
+
+# 或通过 CLI 安装
+code --install-extension obra.superpowers
+code --install-extension obra.superpowers-chrome
+```
+
 ## 安装
 
 将此仓库克隆或复制到你的 VS Code agent plugins 目录：
