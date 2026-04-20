@@ -1,6 +1,6 @@
 # 注册页面设计规范
 
-> **设计状态：** 🔄 视觉重设计中（Figma 稿待更新）
+> **设计状态：** ✅ 视觉重设计完成
 > **Figma 文件：** [AgentsWorkflow](https://www.figma.com/design/aGumSfmwEiHAZxmZn1WPKb) → "Register Page" 页面
 > **fileKey：** `aGumSfmwEiHAZxmZn1WPKb`
 > **Figma Node ID：** `37:14` (Register Page - Desktop)
