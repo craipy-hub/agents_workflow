@@ -3,6 +3,25 @@ name: 'AW-Team Lead'
 description: '软件开发团队主控Agent，负责协调项目经理、设计师、开发者和测试员四个子Agent，管理完整的软件开发生命周期。'
 tools: ['vscode', 'execute', 'read', 'agent', 'edit', 'search', 'web', 'todo']
 agents: ['AW-PM', 'AW-Designer', 'AW-Dev', 'AW-Tester']
+hooks:
+  PreToolUse:
+    - type: command
+      command: 'node .github/hooks/scripts/workflow-guard.mjs'
+      timeout: 10
+      env:
+        AGENT_ROLE: 'team-lead'
+  PostToolUse:
+    - type: command
+      command: 'node .github/hooks/scripts/workflow-guard.mjs'
+      timeout: 10
+      env:
+        AGENT_ROLE: 'team-lead'
+  Stop:
+    - type: command
+      command: 'node .github/hooks/scripts/workflow-guard.mjs'
+      timeout: 10
+      env:
+        AGENT_ROLE: 'team-lead'
 ---
 
 ## 身份

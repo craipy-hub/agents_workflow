@@ -109,6 +109,43 @@ git clone https://github.com/craipy-hub/agents_workflow.git .github/copilot/agen
 - 可以和项目代码一起版本控制
 - 团队成员 clone 项目后自动获得这些 Agent
 
+## Hook 约束原型
+
+这个仓库现在包含一版基于 Copilot hooks 的协作约束原型，用来把 Team Lead 和子 Agent 的配合流程从“提示约定”升级为“可执行守卫”。
+
+### 启用条件
+
+1. 使用支持 Copilot hooks 的 VS Code 预览版本
+2. 在 `settings.json` 中开启 agent-scoped hooks：
+
+```json
+"chat.useCustomAgentHooks": true
+```
+
+3. 打开本仓库后，VS Code 会自动加载 [.github/hooks/workflow-guard.json](.github/hooks/workflow-guard.json)
+
+### 当前原型约束了什么
+
+- Team Lead 只能直接调用委派和流程管理相关工具：`runSubagent`、`manage_todo_list`、`vscode_askQuestions`
+- SessionStart、SubagentStart、SubagentStop 会写入运行态审计信息，便于排查编排链路
+- 如果 Team Lead 已经开始编排（更新了 todo）但没有真正委派任何子 Agent，则 Stop hook 会阻止它直接结束
+
+### 相关文件
+
+- [agents/team-lead.agent.md](agents/team-lead.agent.md#L1)：Team Lead 的 agent-scoped hooks
+- [.github/hooks/workflow-guard.json](.github/hooks/workflow-guard.json)：工作区级 hook 注册
+- [.github/hooks/scripts/workflow-guard.mjs](.github/hooks/scripts/workflow-guard.mjs)：共享守卫脚本
+
+### 运行态文件
+
+Hook 会把会话状态写到 `.github/hooks/.state/`，该目录已经加入 [.gitignore](.gitignore#L1)。
+
+### 注意事项
+
+- Copilot hooks 仍处于 Preview，事件字段和加载行为后续可能变化
+- 官方建议不要让 agent 自动改写 hook 脚本本身，避免自修改后立即执行
+- 这一版原型只收紧最稳定的边界，没有把 PM → Designer → Dev → Tester 的完整状态机一次性写死，以免误伤不同任务类型
+
 ## 插件结构
 
 ```

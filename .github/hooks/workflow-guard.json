@@ -1,0 +1,25 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "type": "command",
+        "command": "node .github/hooks/scripts/workflow-guard.mjs",
+        "timeout": 10
+      }
+    ],
+    "SubagentStart": [
+      {
+        "type": "command",
+        "command": "node .github/hooks/scripts/workflow-guard.mjs",
+        "timeout": 10
+      }
+    ],
+    "SubagentStop": [
+      {
+        "type": "command",
+        "command": "node .github/hooks/scripts/workflow-guard.mjs",
+        "timeout": 10
+      }
+    ]
+  }
+}
