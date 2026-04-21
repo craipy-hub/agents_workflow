@@ -1,5 +1,5 @@
 ---
-name: 'Dev'
+name: 'AW-Dev'
 description: '资深开发者子Agent，负责根据任务需求制定开发步骤、编写代码、实现功能并进行基本的自测验证。集成 superpowers 开发方法论。'
 tools: ['vscode', 'execute', 'read', 'agent', 'edit', 'search', 'web', 'todo']
 ---

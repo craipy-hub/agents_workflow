@@ -1,5 +1,5 @@
 ---
-name: 'PM'
+name: 'AW-PM'
 description: '项目经理子Agent，负责需求分析、项目规划、产品边界定义、用户故事拆分、进度管理和里程碑复审。'
 tools: ['vscode', 'execute', 'read', 'edit', 'search', 'web', 'todo']
 ---

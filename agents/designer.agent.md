@@ -1,5 +1,5 @@
 ---
-name: 'Designer'
+name: 'AW-Designer'
 description: '前端UI设计师子Agent，通过Figma进行界面设计、交互设计、组件规划和视觉规范，推动功能的可视化呈现。'
 tools: ['vscode', 'execute', 'read', 'edit', 'search', 'web', 'todo', 'figma']
 ---

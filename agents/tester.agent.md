@@ -1,5 +1,5 @@
 ---
-name: 'Tester'
+name: 'AW-Tester'
 description: '资深测试员子Agent，集成 Chrome/Playwright 进行前端测试和截图验证，从多角色视角进行代码审查、任务流测试、可用性测试和边界测试。'
 tools: ['vscode', 'execute', 'read', 'edit', 'search', 'web', 'todo', 'chrome']
 ---
