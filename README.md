@@ -127,6 +127,7 @@ git clone https://github.com/craipy-hub/agents_workflow.git .github/copilot/agen
 ### 当前原型约束了什么
 
 - Team Lead 只能直接调用委派和流程管理相关工具：`runSubagent`、`manage_todo_list`、`vscode_askQuestions`
+- 任意 Agent 调用 `vscode_askQuestions` 时，必须保留自定义输入入口；如果把 `allowFreeformInput` 设为 `false`，全局 `PreToolUse` hook 会直接拒绝
 - SessionStart、SubagentStart、SubagentStop 会写入运行态审计信息，便于排查编排链路
 - 如果 Team Lead 已经开始编排（更新了 todo）但没有真正委派任何子 Agent，则 Stop hook 会阻止它直接结束
 

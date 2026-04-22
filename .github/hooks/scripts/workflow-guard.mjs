@@ -143,6 +143,14 @@ function isAllowedTeamLeadTool(toolName) {
   ]).has(toolName);
 }
 
+function disablesFreeformInput(toolInput) {
+  if (!toolInput || typeof toolInput !== 'object' || !Array.isArray(toolInput.questions)) {
+    return false;
+  }
+
+  return toolInput.questions.some(question => question && question.allowFreeformInput === false);
+}
+
 function extractAgentName(toolInput) {
   if (!toolInput || typeof toolInput !== 'object') {
     return null;
@@ -168,7 +176,7 @@ async function main() {
   if (eventName === 'SessionStart') {
     saveState(paths, state);
     appendLog(paths, eventName, input, { source: input.source || 'unknown' });
-    outputJson(additionalContext(eventName, 'Workflow guard active: delegate implementation work through subagents and keep artifact handoff explicit.'));
+    outputJson(additionalContext(eventName, 'Workflow guard active: delegate implementation work through subagents, keep artifact handoff explicit, and always preserve freeform user input when using vscode_askQuestions.'));
     return;
   }
 
@@ -183,7 +191,7 @@ async function main() {
       agentId: input.agent_id || null,
       agentType: input.agent_type || null
     });
-    outputJson(additionalContext(eventName, 'Report back to Team Lead with concrete outputs, and only escalate to the user when a required tool or MCP dependency is blocked.'));
+    outputJson(additionalContext(eventName, 'Report back to Team Lead with concrete outputs, and only escalate to the user when a required tool, MCP dependency, local environment, or required operation is blocked. When escalating with vscode_askQuestions, always keep freeform input enabled.'));
     return;
   }
 
@@ -204,6 +212,15 @@ async function main() {
   }
 
   if (eventName === 'PreToolUse' && isTeamLeadRole()) {
+    if (input.tool_name === 'vscode_askQuestions' && disablesFreeformInput(input.tool_input)) {
+      appendLog(paths, eventName, input, {
+        toolName: input.tool_name || null,
+        decision: 'deny-freeform-required'
+      });
+      outputJson(denyTool('向用户提问时必须保留自定义输入入口。请移除 `allowFreeformInput: false`，或显式改为 `true`。'));
+      return;
+    }
+
     if (isAllowedTeamLeadTool(input.tool_name)) {
       outputJson({});
       return;
@@ -216,6 +233,15 @@ async function main() {
       decision: 'deny'
     });
     outputJson(denyTool('Team Lead 只能直接委派子 Agent、维护 todo，或在工具故障场景下向用户确认。实现、编辑和检索工作必须交给子 Agent。'));
+    return;
+  }
+
+  if (eventName === 'PreToolUse' && input.tool_name === 'vscode_askQuestions' && disablesFreeformInput(input.tool_input)) {
+    appendLog(paths, eventName, input, {
+      toolName: input.tool_name || null,
+      decision: 'deny-freeform-required'
+    });
+    outputJson(denyTool('向用户提问时必须保留自定义输入入口。请移除 `allowFreeformInput: false`，或显式改为 `true`。'));
     return;
   }
 
